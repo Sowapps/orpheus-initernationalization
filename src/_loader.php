@@ -6,8 +6,8 @@
  * Require declaration of constants: LANGDIR, LANG.
  */
 
-define('HOOK_GETLANG', 'getDomainLang');
-Hook::create(HOOK_GETLANG);
+// define('HOOK_GETLANG', 'getDomainLang');
+// Hook::create(HOOK_GETLANG);
 
 /** Loads a language ini file
 
@@ -19,9 +19,9 @@ Hook::create(HOOK_GETLANG);
 function loadLangFile($domain='global') {
 	global $LANG, $APP_LANG;
 	if( isset($LANG[$domain]) ) { return; }
-	if( !isset($APP_LANG) ) {
-		$APP_LANG	= Hook::trigger(HOOK_GETLANG, true, LANG, $domain);
-	}
+// 	if( !isset($APP_LANG) ) {
+// 		$APP_LANG	= Hook::trigger(HOOK_GETLANG, true, LANG, $domain);
+// 	}
 	if( !empty($domain) && existsPathOf(LANGDIR.'/'.$APP_LANG.'/'.$domain.'.ini') ) {
 		$GLOBALS['LANG'][$domain] = parse_ini_file(pathOf(LANGDIR.'/'.$APP_LANG.'/'.$domain.'.ini'));
 		
