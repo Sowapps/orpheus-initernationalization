@@ -1,0 +1,23 @@
+{
+	"name" : "orpheus/orpheus-initernationalization",
+	"description" : "Orpheus Initernationalization",
+	"keywords" : [
+		"orpheus",
+		"internationalization",
+		"ini"
+	],
+	"autoload" : {
+		"files" : [
+			"src/_loader.php"
+		]
+	},
+	"type" : "library",
+	"license" : "MIT",
+	"authors" : [{
+			"name" : "Florent HAZARD",
+			"email" : "contact@sowapps.com",
+			"homepage" : "http://sowapps.com",
+			"role" : "Developer"
+		}
+	]
+}
