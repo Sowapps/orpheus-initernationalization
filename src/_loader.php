@@ -1,37 +1,46 @@
 <?php
-/** Initernationalization
 
- * Translation plugin using ini files
+/**
+ * Initernationalization
  * 
+ * Translation plugin using ini files
  * Require declaration of constants: LANGDIR, LANG.
  */
 
 // define('HOOK_GETLANG', 'getDomainLang');
 // Hook::create(HOOK_GETLANG);
 
-/** Loads a language ini file
-
+/**
+ * Load a language ini file
+ * 
  * @param string $domain The domain of the file to load.
  * 
- * Loads a language ini file from the file system.
+ * Load a language ini file from the file system.
  * You don't have to use this function explicitly.
  */
 function loadLangFile($domain='global') {
 	global $LANG, $APP_LANG;
 	if( isset($LANG[$domain]) ) { return; }
-// 	if( !isset($APP_LANG) ) {
-// 		$APP_LANG	= Hook::trigger(HOOK_GETLANG, true, LANG, $domain);
-// 	}
-	if( !empty($domain) && existsPathOf(LANGDIR.'/'.$APP_LANG.'/'.$domain.'.ini') ) {
-		$GLOBALS['LANG'][$domain] = parse_ini_file(pathOf(LANGDIR.'/'.$APP_LANG.'/'.$domain.'.ini'));
+	if( !isset($APP_LANG) ) {
+		// Set APP LANG to default
+		$APP_LANG = LANG;
+// 		$APP_LANG = Hook::trigger(HOOK_GETLANG, true, LANG, $domain);
+	}
+	if( !empty($domain) ) {
+		$GLOBALS['LANG'][$domain] = array();
+		if( existsPathOf(LANGDIR.$APP_LANG.'/'.$domain.'.ini', $path) ) {
+			$GLOBALS['LANG'][$domain] = parse_ini_file($path);
+// 			$GLOBALS['LANG'][$domain] = parse_ini_file(pathOf(LANGDIR.$APP_LANG.'/'.$domain.'.ini'));
+		}
 		
-	} else if( existsPathOf(LANGDIR.'/'.$APP_LANG.'.ini') ) {
-		$GLOBALS['LANG'] = parse_ini_file(pathOf(LANGDIR.'/'.$APP_LANG.'.ini'));
+// 	} else if( existsPathOf(LANGDIR.'/'.$APP_LANG.'.ini') ) {
+// 		$GLOBALS['LANG'] = parse_ini_file(pathOf(LANGDIR.'/'.$APP_LANG.'.ini'));
 	}
 }
 
-/** Text function for translations.
-
+/**
+ * Text function for translations.
+ * 
  * @param string $k The Key to translate, prefer to use an internal language (English CamelCase).
  * @param string $domain The domain to apply the Key. Default value is 'global'.
  * @param array|string $values The values array to replace in text. Could be used as second parameter.
@@ -64,7 +73,6 @@ function t($k, $domain='global', $values=array()) {
 		}
 	}
 	if( $values!==array() ) {
-// 		debug($k.' - $values', $values);
 		if( !is_array($values) ) {
 			$values		= array_slice(func_get_args(), 2);
 		}
@@ -75,22 +83,27 @@ function t($k, $domain='global', $values=array()) {
 			$rkeys		= $values[0];
 			$rvalues	= !empty($values[1]) ? $values[1] : '';
 		} else {
-// 			text('Mapping keys');
 			$rkeys		= array_map(function ($v) { return "#{$v}#"; }, array_keys($values));
 			$rvalues	= array_values($values);
-// 			text($rkeys);
-// 			text($rvalues);
 		}
 		$r = str_replace($rkeys, $rvalues, $r);
 	}
 	return $r;
 }
+/**
+ * 
+ * @param unknown $k
+ * @param string $domain
+ * @param array $values
+ * @see t()
+ */
 function _t($k, $domain='global', $values=array()) {
 	echo t($k, $domain, $values);
 }
 
-/** Checks if this key exists.
-
+/**
+ * Check if this key exists.
+ * 
  * @param string $k The Key to translate, prefer to use an internal language (English CamelCase).
  * @param string $domain The domain to apply the Key. Default value is 'global'.
  * @return boolean True if the translation exists in this domain.
@@ -103,8 +116,9 @@ function hasTranslation($k, $domain='global') {
 	return isset($LANG[$domain]) && isset($LANG[$domain][$k]);
 }
 
-/** Checks if this key exists.
-
+/**
+ * Check if this key exists.
+ * 
  * @param string $k The Key to translate, prefer to use an internal language (English CamelCase).
  * @param string $default The default translation value to use.
  * @param string $domain The domain to apply the Key. Default value is 'global'.
@@ -136,5 +150,3 @@ function tc($k) {
 function sanitizeNumber($value) {
 	return str_replace(array(tc('decimal_point'), tc('thousands_sep')), array('.', ''), $value);
 }
-
-// define('LOCALE_', 'decimal_point');
