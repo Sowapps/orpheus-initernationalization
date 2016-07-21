@@ -1,5 +1,10 @@
 <?php
 
+if( !defined('ORPHEUSPATH') ) {
+	// Do not load in a non-orpheus environment
+	return;
+}
+
 /**
  * Initernationalization
  * 
