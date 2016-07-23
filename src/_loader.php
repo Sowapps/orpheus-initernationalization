@@ -1,16 +1,16 @@
 <?php
+/**
+ * Initernationalization library
+ * 
+ * Translation plugin using ini files
+ * Require declaration of constants: LANGDIR, LANG.
+ */
 
 if( !defined('ORPHEUSPATH') ) {
 	// Do not load in a non-orpheus environment
 	return;
 }
 
-/**
- * Initernationalization
- * 
- * Translation plugin using ini files
- * Require declaration of constants: LANGDIR, LANG.
- */
 
 // define('HOOK_GETLANG', 'getDomainLang');
 // Hook::create(HOOK_GETLANG);
@@ -96,10 +96,11 @@ function t($k, $domain='global', $values=array()) {
 	return $r;
 }
 /**
+ * Display t()
  * 
- * @param unknown $k
- * @param string $domain
- * @param array $values
+ * @param string $k The Key to translate, prefer to use an internal language (English CamelCase).
+ * @param string $domain The domain to apply the Key. Default value is 'global'.
+ * @param array|string $values The values array to replace in text. Could be used as second parameter.
  * @see t()
  */
 function _t($k, $domain='global', $values=array()) {
@@ -143,6 +144,13 @@ if( defined('LOCALE') ) {
 	setlocale(LC_ALL, LOCALE);
 }
 
+/**
+ * Translate currency using t() or server config with localeconv()
+ * 
+ * @param string $k
+ * @return string
+ * @see http://php.net/manual/fr/function.localeconv.php
+ */
 function tc($k) {
 	if( hasTranslation($k) ) { return t($k); }
 	global $LOCALECONV;
@@ -152,6 +160,12 @@ function tc($k) {
 	return isset($LOCALECONV[$k]) ? $LOCALECONV[$k] : null;
 }
 
+/**
+ * Convert a localized string number into a programming one
+ * 
+ * @param string $value
+ * @return string
+ */
 function sanitizeNumber($value) {
 	return str_replace(array(tc('decimal_point'), tc('thousands_sep')), array('.', ''), $value);
 }
