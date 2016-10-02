@@ -169,3 +169,36 @@ function tc($k) {
 function sanitizeNumber($value) {
 	return str_replace(array(tc('decimal_point'), tc('thousands_sep')), array('.', ''), $value);
 }
+
+/**
+ * Format a money by currency and using a number formatter
+ * 
+ * @param number $value
+ * @param string $double
+ * @param string $currency
+ * @return string
+ */
+function formatMoney($value, $double=true, $currency='€') {
+	return ($double ? formatDouble($value) : formatInt($value)).' '.$currency;
+}
+
+/**
+ * Format a int using locale
+ * 
+ * @param number $value
+ * @return string
+ */
+function formatInt($value) {
+	return number_format($value, 0, '', t('thousands_sep'));
+}
+
+/**
+ * Format a double using locale
+ * 
+ * @param number $value
+ * @return string
+ */
+function formatDouble($value) {
+	return number_format($value, 2, t('decimal_point'), t('thousands_sep'));
+}
+
