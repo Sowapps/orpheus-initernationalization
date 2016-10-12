@@ -33,6 +33,7 @@ function loadLangFile($domain='global') {
 	}
 	if( !empty($domain) ) {
 		$GLOBALS['LANG'][$domain] = array();
+		$path = null;
 		if( existsPathOf(LANGDIR.$APP_LANG.'/'.$domain.'.ini', $path) ) {
 			$GLOBALS['LANG'][$domain] = parse_ini_file($path);
 // 			$GLOBALS['LANG'][$domain] = parse_ini_file(pathOf(LANGDIR.$APP_LANG.'/'.$domain.'.ini'));
@@ -77,19 +78,19 @@ function t($k, $domain='global', $values=array()) {
 			break;
 		}
 	}
-	if( $values!==array() ) {
+	if( $values !== array() ) {
 		if( !is_array($values) ) {
-			$values		= array_slice(func_get_args(), 2);
+			$values = array_slice(func_get_args(), 2);
 		}
 		if( isset($values[0]) ) {
 			if( !is_array($values[0]) ) {
 				return vsprintf($r, $values);
 			}
-			$rkeys		= $values[0];
-			$rvalues	= !empty($values[1]) ? $values[1] : '';
+			$rkeys = $values[0];
+			$rvalues = !empty($values[1]) ? $values[1] : '';
 		} else {
-			$rkeys		= array_map(function ($v) { return "#{$v}#"; }, array_keys($values));
-			$rvalues	= array_values($values);
+			$rkeys = array_map(function ($v) { return "#{$v}#"; }, array_keys($values));
+			$rvalues = array_values($values);
 		}
 		$r = str_replace($rkeys, $rvalues, $r);
 	}
