@@ -42,14 +42,15 @@ function getLangDomainFile($lang, $domain) {
  * You don't have to use this function explicitly.
  */
 function loadLangFile($domain='global') {
-	global $LANG, $APP_LANG;
+// 	global $LANG, $APP_LANG;
+	global $LANG;
 	if( $LANG && array_key_exists($domain, $LANG) ) {
 		return;
 	}
 // 	if( !isset($APP_LANG) ) {
 // 		$APP_LANG = Hook::trigger(HOOK_GETLANG, true, LANG, $domain);
 // 	}
-	$LANG[$domain] = getLangDomainFile($APP_LANG, $domain);
+	$LANG[$domain] = getLangDomainFile($LANG, $domain);
 // 	if( !empty($domain) && existsPathOf(LANGDIR.'/'.$APP_LANG.'/'.$domain.'.ini') ) {
 // 		$GLOBALS['LANG'][$domain] = parse_ini_file(pathOf(LANGDIR.'/'.$APP_LANG.'/'.$domain.'.ini'));
 		
