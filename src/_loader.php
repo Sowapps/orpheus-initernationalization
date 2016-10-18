@@ -58,7 +58,14 @@ function loadLangFile($domain='global') {
 	}
 	// Former LANGBASE constant
 	if( !isset($APP_LANG) ) {
-		list($APP_LANG) = explode('_', $APP_LOCALE, 2);
+		if( defined('LANGBASE') ) {
+			// backward compatibility
+			$APP_LANG = LANGBASE;
+		} else {
+			list($APP_LANG) = explode('_', $APP_LOCALE, 2);
+			// backward compatibility
+			define('LANGBASE', $APP_LANG);
+		}
 	}
 // 	if( !isset($APP_LANG) ) {
 // 		$APP_LANG = Hook::trigger(HOOK_GETLANG, true, LANG, $domain);
