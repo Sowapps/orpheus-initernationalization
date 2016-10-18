@@ -11,9 +11,27 @@ if( !defined('ORPHEUSPATH') ) {
 	return;
 }
 
-
 // define('HOOK_GETLANG', 'getDomainLang');
 // Hook::create(HOOK_GETLANG);
+
+/**
+ * Get a language ini file
+ * 
+ * @param string $lang The lang to get the domain file
+ * @param string $domain The domain of the file to load
+ * @return array The translations
+ * 
+ */
+function getLangDomainFile($lang, $domain) {
+	if( !empty($domain) && existsPathOf(LANGDIR.'/'.$lang.'/'.$domain.'.ini') ) {
+		return parse_ini_file(pathOf(LANGDIR.'/'.$lang.'/'.$domain.'.ini'));
+		
+// 	} else if( existsPathOf(LANGDIR.'/'.$APP_LANG.'.ini') ) {
+// 		$GLOBALS['LANG'] = parse_ini_file(pathOf(LANGDIR.'/'.$APP_LANG.'.ini'));
+	} else {
+		return null;
+	}
+}
 
 /**
  * Load a language ini file
@@ -25,6 +43,20 @@ if( !defined('ORPHEUSPATH') ) {
  */
 function loadLangFile($domain='global') {
 	global $LANG, $APP_LANG;
+	if( $LANG && array_key_exists($domain, $LANG) ) {
+		return;
+	}
+// 	if( !isset($APP_LANG) ) {
+// 		$APP_LANG = Hook::trigger(HOOK_GETLANG, true, LANG, $domain);
+// 	}
+	$LANG[$domain] = getLangDomainFile($APP_LANG, $domain);
+// 	if( !empty($domain) && existsPathOf(LANGDIR.'/'.$APP_LANG.'/'.$domain.'.ini') ) {
+// 		$GLOBALS['LANG'][$domain] = parse_ini_file(pathOf(LANGDIR.'/'.$APP_LANG.'/'.$domain.'.ini'));
+		
+// 	} else if( existsPathOf(LANGDIR.'/'.$APP_LANG.'.ini') ) {
+// 		$GLOBALS['LANG'] = parse_ini_file(pathOf(LANGDIR.'/'.$APP_LANG.'.ini'));
+// 	}
+	/*
 	if( isset($LANG[$domain]) ) { return; }
 	if( !isset($APP_LANG) ) {
 		// Set APP LANG to default
@@ -32,20 +64,17 @@ function loadLangFile($domain='global') {
 // 		$APP_LANG = Hook::trigger(HOOK_GETLANG, true, LANG, $domain);
 	}
 	if( !empty($domain) ) {
-		$GLOBALS['LANG'][$domain] = array();
+		$LANG['LANG'][$domain] = array();
 		$path = null;
 		if( existsPathOf(LANGDIR.$APP_LANG.'/'.$domain.'.ini', $path) ) {
-			$GLOBALS['LANG'][$domain] = parse_ini_file($path);
-// 			$GLOBALS['LANG'][$domain] = parse_ini_file(pathOf(LANGDIR.$APP_LANG.'/'.$domain.'.ini'));
+			$LANG[$domain] = parse_ini_file($path);
 		}
-		
-// 	} else if( existsPathOf(LANGDIR.'/'.$APP_LANG.'.ini') ) {
-// 		$GLOBALS['LANG'] = parse_ini_file(pathOf(LANGDIR.'/'.$APP_LANG.'.ini'));
 	}
+	*/
 }
 
 /**
- * Text function for translations.
+ * Translate a key
  * 
  * @param string $k The Key to translate, prefer to use an internal language (English CamelCase).
  * @param string $domain The domain to apply the Key. Default value is 'global'.
@@ -96,6 +125,7 @@ function t($k, $domain='global', $values=array()) {
 	}
 	return $r;
 }
+
 /**
  * Display t()
  * 
