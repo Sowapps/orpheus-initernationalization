@@ -43,14 +43,27 @@ function getLangDomainFile($lang, $domain) {
  */
 function loadLangFile($domain='global') {
 // 	global $LANG, $APP_LANG;
-	global $LANG;
+	/**
+	 * $APP_LOCALE is the current locale, e.g en_US
+	 * $APP_LANG is the current base language, e.g fr
+	 * $LANG is the array containing all current locale translations
+	 */
+	global $LANG, $APP_LOCALE, $APP_LANG;
 	if( $LANG && array_key_exists($domain, $LANG) ) {
 		return;
+	}
+	if( !isset($APP_LOCALE) ) {
+		// Set APP LANG to default with backward compatibility
+		$APP_LOCALE = defined('DEFAULT_LOCALE') ? DEFAULT_LOCALE : LANG;
+	}
+	// Former LANGBASE constant
+	if( !isset($APP_LANG) ) {
+		list($APP_LANG) = explode('_', $APP_LOCALE, 2);
 	}
 // 	if( !isset($APP_LANG) ) {
 // 		$APP_LANG = Hook::trigger(HOOK_GETLANG, true, LANG, $domain);
 // 	}
-	$LANG[$domain] = getLangDomainFile($LANG, $domain);
+	$LANG[$domain] = getLangDomainFile($APP_LOCALE, $domain);
 // 	if( !empty($domain) && existsPathOf(LANGDIR.'/'.$APP_LANG.'/'.$domain.'.ini') ) {
 // 		$GLOBALS['LANG'][$domain] = parse_ini_file(pathOf(LANGDIR.'/'.$APP_LANG.'/'.$domain.'.ini'));
 		
