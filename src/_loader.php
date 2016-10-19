@@ -156,7 +156,7 @@ function t($k, $domain='global', $values=array()) {
  * @see t()
  */
 function _t($k, $domain='global', $values=array()) {
-	echo t($k, $domain, $values);
+	echo t($k, $domain, is_array($values) ? $values : array_slice(func_get_args(), 2));
 }
 
 /**
