@@ -112,10 +112,15 @@ function t($k, $domain = 'global', $values = []) {
 			$rkeys = $values[0];
 			$rvalues = !empty($values[1]) ? $values[1] : '';
 		} else {
-			$rkeys = array_map(function ($v) {
-				return "#{$v}#";
-			}, array_keys($values));
-			$rvalues = array_values($values);
+			$rvalues = $rkeys = [];
+			foreach( $values as $key => $value ) {
+				// Ignore non string values
+				if( !is_string_convertible($value) ) {
+					continue;
+				}
+				$rkeys[] = "#{$key}#";
+				$rvalues[] = "$value";
+			}
 		}
 		$r = str_replace($rkeys, $rvalues, $r);
 	}
