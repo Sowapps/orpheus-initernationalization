@@ -1,18 +1,16 @@
 <?php
 /**
  * Initernationalization library
- *
  * Translation plugin using ini files
- * Require declaration of constants: LANGDIR, LANG.
+ * Require declaration of constants: LANG_FOLDER, DEFAULT_LOCALE.
+ *
+ * @author Florent HAZARD <f.hazard@sowapps.com>
  */
 
 if( !defined('ORPHEUS_PATH') ) {
 	// Do not load in a non-orpheus environment
 	return;
 }
-
-// define('HOOK_GETLANG', 'getDomainLang');
-// Hook::create(HOOK_GETLANG);
 
 /**
  * Get a language ini file
@@ -23,8 +21,8 @@ if( !defined('ORPHEUS_PATH') ) {
  *
  */
 function getLangDomainFile($lang, $domain) {
-	if( !empty($domain) && existsPathOf(LANGDIR . '/' . $lang . '/' . $domain . '.ini') ) {
-		return parse_ini_file(pathOf(LANGDIR . '/' . $lang . '/' . $domain . '.ini'));
+	if( !empty($domain) && existsPathOf(LANG_FOLDER . '/' . $lang . '/' . $domain . '.ini') ) {
+		return parse_ini_file(pathOf(LANG_FOLDER . '/' . $lang . '/' . $domain . '.ini'));
 	} else {
 		return null;
 	}
@@ -51,7 +49,7 @@ function loadLangFile($domain = 'global') {
 	}
 	if( !isset($APP_LOCALE) ) {
 		// Set APP LANG to default with backward compatibility
-		$APP_LOCALE = defined('DEFAULT_LOCALE') ? DEFAULT_LOCALE : LANG;
+		$APP_LOCALE = defined('DEFAULT_LOCALE') ? DEFAULT_LOCALE : (defined('LANG') ? LANG : 'en_US');
 	}
 	// Former LANGBASE constant
 	if( !isset($APP_LANG) ) {
