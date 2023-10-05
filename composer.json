@@ -1,23 +1,34 @@
 {
-	"name" : "orpheus/orpheus-initernationalization",
-	"description" : "Orpheus Initernationalization",
-	"keywords" : [
+	"name": "orpheus/orpheus-initernationalization",
+	"description": "Orpheus Initernationalization",
+	"keywords": [
 		"orpheus",
 		"internationalization",
+		"i18n",
+		"translation",
 		"ini"
 	],
-	"autoload" : {
-		"files" : [
+	"autoload": {
+		"psr-4": {
+			"Orpheus\\": "src/"
+		},
+		"files": [
 			"src/_loader.php"
 		]
 	},
-	"type" : "library",
-	"license" : "MIT",
-	"authors" : [{
-			"name" : "Florent HAZARD",
-			"email" : "contact@sowapps.com",
-			"homepage" : "http://sowapps.com",
-			"role" : "Developer"
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Florent HAZARD",
+			"email": "contact@sowapps.com",
+			"homepage": "https://sowapps.com",
+			"role": "Developer"
 		}
-	]
+	],
+	"homepage": "https://github.com/Sowapps/orpheus-initernationalization",
+	"suggest": {
+		"ext-yaml": "Yaml compatibility",
+		"ext-intl": "Intl number formatting"
+	}
 }
