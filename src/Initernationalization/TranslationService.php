@@ -10,6 +10,7 @@ use Orpheus\Cache\FileSystemCache;
 use Orpheus\Initernationalization\Provider\AbstractTranslationProvider;
 use Orpheus\Initernationalization\Provider\IniTranslationProvider;
 use Orpheus\Initernationalization\Provider\YamlTranslationProvider;
+use Orpheus\Service\ApplicationKernel;
 use RuntimeException;
 
 class TranslationService {
@@ -123,6 +124,7 @@ class TranslationService {
 	}
 	
 	public function buildDomain(string $domain, bool $force = false): void {
+		$force = $force || !ApplicationKernel::get()->isKernelCachingEnabled();
 		$cache = new FileSystemCache('translations', $this->locale . '-' . $domain);
 		if( $force || !$cache->get($translations) ) {
 			$domainTranslations = [];
